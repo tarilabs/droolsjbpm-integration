@@ -16,11 +16,8 @@
 
 package org.drools.karaf.itest;
 
-import java.io.File;
-
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
-import org.apache.karaf.tooling.exam.options.LogLevelOption;
 import org.drools.camel.example.Person;
 import org.drools.compiler.kproject.ReleaseIdImpl;
 import org.junit.Test;
@@ -28,16 +25,20 @@ import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.MavenUtils;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.karaf.options.LogLevelOption;
+import org.ops4j.pax.exam.options.libraries.JUnitBundlesOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.osgi.context.support.OsgiBundleXmlApplicationContext;
 
-import static org.apache.karaf.tooling.exam.options.KarafDistributionOption.*;
-import static org.drools.osgi.spring.OsgiApplicationContextFactory.getOsgiSpringContext;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import java.io.File;
 
-@RunWith(JUnit4TestRunner.class)
+import static org.drools.osgi.spring.OsgiApplicationContextFactory.getOsgiSpringContext;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.*;
+
+@RunWith(PaxExam.class)
 public class DroolsOnBodyCamelKarafIntegrationTest extends OSGiIntegrationSpringTestSupport {
 
     protected static final transient Logger LOG = LoggerFactory.getLogger(DroolsOnBodyCamelKarafIntegrationTest.class);
@@ -86,16 +87,21 @@ public class DroolsOnBodyCamelKarafIntegrationTest extends OSGiIntegrationSpring
                 logLevel(LogLevelOption.LogLevel.INFO),
 
                 // Load Spring DM Karaf Feature
-                scanFeatures(
+                features(
                         maven().groupId("org.apache.karaf.assemblies.features").artifactId("standard").type("xml").classifier("features").versionAsInProject(),
                         "spring", "spring-dm"
-                ),
+                        ),
 
                 // Load camel-core, camel-spring, camel-test & camel-cxf Features
                 loadCamelFeatures("camel-cxf"),
 
                 // Load drools-module (= core + compiler + knowledge), kie-camel & kie-spring
-                loadDroolsFeatures("kie-spring","kie-camel")
+                loadDroolsFeatures("kie-spring","kie-camel"),
+
+                // Option to be used to do remote debugging
+                //debugConfiguration("5005", true),
+
+                new JUnitBundlesOption()
 
         };
 

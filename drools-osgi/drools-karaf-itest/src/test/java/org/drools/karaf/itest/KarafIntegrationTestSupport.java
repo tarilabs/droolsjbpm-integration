@@ -16,12 +16,6 @@
 
 package org.drools.karaf.itest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
-import javax.inject.Inject;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.osgi.CamelContextFactory;
 import org.apache.camel.test.junit4.CamelTestSupport;
@@ -33,7 +27,13 @@ import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.ops4j.pax.exam.CoreOptions.*;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 
 public class KarafIntegrationTestSupport extends CamelTestSupport {
 
@@ -105,7 +105,7 @@ public class KarafIntegrationTestSupport extends CamelTestSupport {
         for (String feature : features) {
             result.add(feature);
         }
-        return scanFeatures(getCamelKarafFeatureUrl(CamelVersion), result.toArray(new String[4 + features.length]));
+        return features(getCamelKarafFeatureUrl(CamelVersion), result.toArray(new String[4 + features.length]));
     }
 
     public static Option loadDroolsFeatures(String... features) {
@@ -114,7 +114,7 @@ public class KarafIntegrationTestSupport extends CamelTestSupport {
         for (String feature : features) {
             result.add(feature);
         }
-        return scanFeatures(getFeatureUrl("org.drools", "drools-karaf-features").type("xml").classifier("features").version(DroolsVersion), result.toArray(new String[4 + features.length]));
+        return features(getFeatureUrl("org.drools", "drools-karaf-features").type("xml").classifier("features").version(DroolsVersion), result.toArray(new String[4 + features.length]));
     }
 
 }
