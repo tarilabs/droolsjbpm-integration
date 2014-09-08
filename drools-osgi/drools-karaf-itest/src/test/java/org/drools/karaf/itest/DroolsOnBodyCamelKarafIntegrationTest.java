@@ -101,7 +101,7 @@ public class DroolsOnBodyCamelKarafIntegrationTest extends OSGiIntegrationSpring
                 // Option to be used to do remote debugging
                 //debugConfiguration("5005", true),
 
-                new JUnitBundlesOption()
+                org.ops4j.pax.exam.CoreOptions.junitBundles()
 
         };
 
