@@ -29,6 +29,7 @@
 
   <build>
     <plugins>
+
       <plugin>
         <groupId>org.kie</groupId>
         <artifactId>kie-maven-plugin</artifactId>

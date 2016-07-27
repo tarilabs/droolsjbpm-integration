@@ -8,6 +8,7 @@
             <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
             <configuration>
                 <phases>
+                    <generate-sources>org.kie:kie-maven-plugin:instrumentForOOPath</generate-sources>
                     <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
                     <compile>org.apache.maven.plugins:maven-compiler-plugin:compile,org.kie:kie-maven-plugin:build</compile>
                     <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
