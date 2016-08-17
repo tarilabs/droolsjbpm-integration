@@ -57,7 +57,6 @@
              <c:simple-property name="nameTemplate" readOnly="true" default="KieBase {kbaseId}"/>
              <c:simple-property name="descriptionTemplate" readOnly="true" default="A JMX bean for Kie Base {kbaseId}"/>
              <c:simple-property name="kbaseId" type="string" readOnly="true" description="The Kie Base Id"/>
-             <c:simple-property name="kcId" readOnly="true" default="{kcontainerId}" description="x2"/>
           </plugin-configuration>
     
           <operation name="startInternalMBeans"
@@ -76,7 +75,7 @@
                     class="org.rhq.plugins.jmx.MBeanResourceComponent">
         
               <plugin-configuration>
-                 <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId={kcId},kbaseId={kbaseId},group=Sessions,ksessionId=%sessionId%"/>
+                 <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId={kcontainerId},kbaseId={kbaseId},group=Sessions,ksessionId=%sessionId%"/>
                  <c:simple-property name="nameTemplate" readOnly="true" default="KieSession {sessionId}"/>
                  <c:simple-property name="descriptionTemplate" readOnly="true" default="A JMX bean for Kie Base {kbaseId}, Kie session {sessionId}"/>
                  <c:simple-property name="kbaseId" type="string" readOnly="true" description="The Kie Base Id"/>
