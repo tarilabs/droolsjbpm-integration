@@ -29,9 +29,9 @@
         class="org.rhq.plugins.jmx.MBeanResourceComponent">
     
           <plugin-configuration>
-             <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId=%containerId%"/>
-             <c:simple-property name="nameTemplate" readOnly="true" default="KieContainer {containerId}"/>
-             <c:simple-property name="descriptionTemplate" readOnly="true" default="A JMX bean for Kie Container {containerId}"/>
+             <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId=%kcontainerId%"/>
+             <c:simple-property name="nameTemplate" readOnly="true" default="KieContainer {kcontainerId}"/>
+             <c:simple-property name="descriptionTemplate" readOnly="true" default="A JMX bean for Kie Container {kcontainerId}"/>
              <c:simple-property name="kcontainerId" type="string" readOnly="true" description="The Kie Container Id"/>
           </plugin-configuration>
   
@@ -53,7 +53,7 @@
                 class="org.rhq.plugins.jmx.MBeanResourceComponent">
     
           <plugin-configuration>
-             <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId=%containerId%,kbaseId=%kbaseId%"/>
+             <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId={kcontainerId},kbaseId=%kbaseId%"/>
              <c:simple-property name="nameTemplate" readOnly="true" default="KieBase {kbaseId}"/>
              <c:simple-property name="descriptionTemplate" readOnly="true" default="A JMX bean for Kie Base {kbaseId}"/>
              <c:simple-property name="kbaseId" type="string" readOnly="true" description="The Kie Base Id"/>
@@ -75,7 +75,7 @@
                     class="org.rhq.plugins.jmx.MBeanResourceComponent">
         
               <plugin-configuration>
-                 <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId=%containerId%,kbaseId=%kbaseId%,group=Sessions,ksessionId=%sessionId%"/>
+                 <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId={kcontainerId},kbaseId={kbaseId},group=Sessions,ksessionId=%sessionId%"/>
                  <c:simple-property name="nameTemplate" readOnly="true" default="KieSession {sessionId}"/>
                  <c:simple-property name="descriptionTemplate" readOnly="true" default="A JMX bean for Kie Base {kbaseId}, Kie session {sessionId}"/>
                  <c:simple-property name="kbaseId" type="string" readOnly="true" description="The Kie Base Id"/>
