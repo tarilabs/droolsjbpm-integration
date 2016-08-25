@@ -53,7 +53,7 @@
                 class="org.rhq.plugins.jmx.MBeanResourceComponent">
     
           <plugin-configuration>
-             <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId={kcontainerId},kbaseId=%kbaseId%"/>
+             <c:simple-property name="objectName" readOnly="true" default="org.kie:kcontainerId=%kcontainerId%,kbaseId=%kbaseId%"/>
              <c:simple-property name="nameTemplate" readOnly="true" default="KieBase {kbaseId}"/>
              <c:simple-property name="descriptionTemplate" readOnly="true" default="A JMX bean for Kie Base {kbaseId}"/>
              <c:simple-property name="kbaseId" type="string" readOnly="true" description="The Kie Base Id"/>
