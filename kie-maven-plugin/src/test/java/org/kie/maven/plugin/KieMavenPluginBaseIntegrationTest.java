@@ -32,7 +32,10 @@ abstract public class KieMavenPluginBaseIntegrationTest {
     public final MavenRuntime mavenRuntime;
 
     public KieMavenPluginBaseIntegrationTest(MavenRuntime.MavenRuntimeBuilder builder) throws Exception {
-        this.mavenRuntime = builder.forkedBuilder().withCliOptions("-X").build();
+        this.mavenRuntime = builder
+                .forkedBuilder()
+//                .withCliOptions("-X")
+                .build();
     }
 
 }

@@ -15,7 +15,6 @@ import org.drools.core.reteoo.LeftInputAdapterNode;
 import org.drools.core.reteoo.LeftTuple;
 import org.drools.core.reteoo.ObjectTypeNode;
 import org.drools.core.reteoo.ReactiveFromNode;
-import org.drools.core.reteoo.ReteDumper;
 import org.drools.core.reteoo.TupleMemory;
 import org.drools.core.util.Iterator;
 
@@ -79,6 +78,8 @@ public class XPathTest {
         Class<?> class1 = personCtClass.toClass();
         Arrays.stream(class1.getMethods()).forEach(System.out::println);
         
+        File dir = new File("./target/JAVASSIST/");
+        dir.mkdirs();
         CtClass schooltClass = cp2.makeClass(new ByteArrayInputStream(schoolBytecode));
         schooltClass.toClass();
         File schoolClassFile = new File("./target/JAVASSIST/School.class");
@@ -338,6 +339,7 @@ public class XPathTest {
     }
     
     @Test
+    @Ignore("currently working on this on drools-compiler")
     public void testListReactive() {
         String drl =
                 "import org.drools.compiler.xpath.tobeinstrumented.model.*;\n" +
@@ -353,7 +355,6 @@ public class XPathTest {
                                              .build()
                                              .newKieSession();
         
-        ReteDumper.dumpRete(ksession);
         
         Child charlie = new Child( "Charles", 15 );
         Child debbie = new Child( "Debbie", 19 );
