@@ -111,6 +111,10 @@
       <groupId>org.kie</groupId>
       <artifactId>kie-internal</artifactId>
     </dependency>
+    <dependency>
+        <groupId>org.javassist</groupId>
+        <artifactId>javassist</artifactId>
+    </dependency>
     <!-- Include all dependencies needed to support all resource types out-of-the-box -->
     <dependency>
       <groupId>org.drools</groupId>
