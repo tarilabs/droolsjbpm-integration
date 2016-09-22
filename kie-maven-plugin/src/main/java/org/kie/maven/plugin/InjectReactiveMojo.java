@@ -67,6 +67,7 @@ public class InjectReactiveMojo extends AbstractKieMojo {
         final ClassPool classPool = new ClassPool( true ); // 'true' will append classpath for Object.class.
         // Need to append classpath for the project itself output directory for dependencies betweek Pojos of the project itself.
         try {
+            getLog().info("Adding to ClassPool the classpath: " + outputDirectory.getAbsolutePath());
             classPool.appendClassPath(outputDirectory.getAbsolutePath());
         } catch (Exception e) {
             getLog().error( "Unable to append path for outputDirectory : "+outputDirectory );
@@ -74,27 +75,35 @@ public class InjectReactiveMojo extends AbstractKieMojo {
         // Append classpath for ReactiveObject.class by using the JAR of the kie-maven-plugin
         try {
             String aname = ReactiveObject.class.getPackage().getName().replaceAll("\\.", "/") + "/" +  ReactiveObject.class.getSimpleName()+".class";
-            getLog().info(aname);
+            getLog().info("Resolving ReactiveObject from : "+aname);
             // The ReactiveObject shall be resolved by using the JAR of the kie-maven-plugin hence asking the ClassLoader of the kie-maven-plugin to resolve it
             String apath = Thread.currentThread().getContextClassLoader().getResource( aname).getPath();
-            getLog().info( apath );
+            getLog().info(".. as in resource: " + apath );
             String path = null;
             if (apath.contains("!")) {
                 path = apath.substring(0, apath.indexOf("!"));
             } else {
                 path = "file:"+apath.substring(0, apath.indexOf(aname));
             }
-            getLog().info( path );
+            getLog().info(".. as in file path: " + path );
             
             File f = new File(new URI(path));
     
+            getLog().info("Adding to ClassPool the classpath: " + f.getAbsolutePath());
             classPool.appendClassPath(f.getAbsolutePath());
         } catch (Exception e) {
             getLog().error( "Unable to locate path for ReactiveObject." );
             e.printStackTrace();
         }
-        
-        getLog().info("ClassPool is: "+classPool);
+        // Append classpath for the project dependencies
+        for ( URL url : dependenciesURLs() ) {
+            try {
+                getLog().info("Adding to ClassPool the classpath: " + url.getPath());
+                classPool.appendClassPath(url.getPath());
+            } catch (Exception e) {
+                getLog().error( "Unable to append path for project dependency : "+url.getPath() );
+            }
+        }
         
         final BytecodeInjectReactive enhancer = BytecodeInjectReactive.newInstance(classPool);
         
@@ -175,6 +184,13 @@ public class InjectReactiveMojo extends AbstractKieMojo {
             }
         }
 
+        urls.addAll( dependenciesURLs() );
+
+        return new URLClassLoader( urls.toArray( new URL[urls.size()] ), null );
+    }
+
+    private List<URL> dependenciesURLs() throws MojoExecutionException {
+        List<URL> urls = new ArrayList<>();
         // HHH-10145 Add dependencies to classpath as well - all but the ones used for testing purposes
         Set<Artifact> artifacts = null;
         MavenProject project = ( (MavenProject) getPluginContext().get( "project" ) );
@@ -200,8 +216,7 @@ public class InjectReactiveMojo extends AbstractKieMojo {
                 }
             }
         }
-
-        return new URLClassLoader( urls.toArray( new URL[urls.size()] ), null );
+        return urls;
     }
     
     /**
