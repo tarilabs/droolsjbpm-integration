@@ -63,12 +63,15 @@ public class InjectReactiveMojo extends AbstractKieMojo {
         getLog().info( "Starting Hibernate enhancement for classes on " + outputDirectory );
         final ClassLoader classLoader = toClassLoader( Collections.singletonList( root ) );
         
-        final ClassPool classPool = new ClassPool( true );
+        
+        final ClassPool classPool = new ClassPool( true ); // 'true' will append classpath for Object.class.
+        // Need to append classpath for the project itself output directory for dependencies betweek Pojos of the project itself.
         try {
             classPool.appendClassPath(outputDirectory.getAbsolutePath());
         } catch (Exception e) {
             getLog().error( "Unable to append path for outputDirectory : "+outputDirectory );
         }
+        // Append classpath for ReactiveObject.class by using the JAR of the kie-maven-plugin
         try {
             String aname = ReactiveObject.class.getPackage().getName().replaceAll("\\.", "/") + "/" +  ReactiveObject.class.getSimpleName()+".class";
             getLog().info(aname);
