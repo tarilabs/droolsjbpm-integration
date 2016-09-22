@@ -72,7 +72,8 @@ public class InjectReactiveMojo extends AbstractKieMojo {
         try {
             String aname = ReactiveObject.class.getPackage().getName().replaceAll("\\.", "/") + "/" +  ReactiveObject.class.getSimpleName()+".class";
             getLog().info(aname);
-            String apath = classLoader.getResource( aname).getPath();
+            // The ReactiveObject shall be resolved by using the JAR of the kie-maven-plugin hence asking the ClassLoader of the kie-maven-plugin to resolve it
+            String apath = Thread.currentThread().getContextClassLoader().getResource( aname).getPath();
             getLog().info( apath );
             String path = null;
             if (apath.contains("!")) {
@@ -87,6 +88,7 @@ public class InjectReactiveMojo extends AbstractKieMojo {
             classPool.appendClassPath(f.getAbsolutePath());
         } catch (Exception e) {
             getLog().error( "Unable to locate path for ReactiveObject." );
+            e.printStackTrace();
         }
         
         getLog().info("ClassPool is: "+classPool);
