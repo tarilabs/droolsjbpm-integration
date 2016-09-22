@@ -2,10 +2,13 @@ package org.kie.maven.plugin;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -22,7 +25,9 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.drools.core.phreak.ReactiveObject;
 
+import javassist.ClassPool;
 import javassist.CtClass;
 
 @Mojo(name = "injectreactive",
@@ -57,6 +62,96 @@ public class InjectReactiveMojo extends AbstractKieMojo {
 
         getLog().info( "Starting Hibernate enhancement for classes on " + outputDirectory );
         final ClassLoader classLoader = toClassLoader( Collections.singletonList( root ) );
+        
+        final ClassPool classPool = new ClassPool( true );
+        try {
+            classPool.appendClassPath(outputDirectory.getAbsolutePath());
+        } catch (Exception e) {
+            getLog().error( "Unable to append path for outputDirectory : "+outputDirectory );
+        }
+        try {
+            String aname = ReactiveObject.class.getPackage().getName().replaceAll("\\.", "/") + "/" +  ReactiveObject.class.getSimpleName()+".class";
+            getLog().info(aname);
+            String apath = classLoader.getResource( aname).getPath();
+            getLog().info( apath );
+            String path = null;
+            if (apath.contains("!")) {
+                path = apath.substring(0, apath.indexOf("!"));
+            } else {
+                path = "file:"+apath.substring(0, apath.indexOf(aname));
+            }
+            getLog().info( path );
+            
+            File f = new File(new URI(path));
+    
+            classPool.appendClassPath(f.getAbsolutePath());
+        } catch (Exception e) {
+            getLog().error( "Unable to locate path for ReactiveObject." );
+        }
+        
+        getLog().info("ClassPool is: "+classPool);
+        
+        final BytecodeInjectReactive enhancer = BytecodeInjectReactive.newInstance(classPool);
+        
+        for ( File file : sourceSet ) {
+            final CtClass ctClass = toCtClass( file, classPool );
+            if ( ctClass == null ) {
+                continue;
+            }
+
+            // FIXME add package check here?
+            if ( false ) {
+                continue;
+            }
+
+            byte[] enhancedBytecode;
+            try {
+                enhancedBytecode = enhancer.test2(ctClass.getName());
+                
+                writeOutEnhancedClass( enhancedBytecode, ctClass, file );
+
+                getLog().info( "Successfully enhanced class [" + ctClass.getName() + "]" );
+            } catch (Exception e) {
+                getLog().error( "ERROR while trying to enhanced class [" + ctClass.getName() + "]" );
+                e.printStackTrace();
+            }
+            
+        }
+    }
+    
+    private CtClass toCtClass(File file, ClassPool classPool) throws MojoExecutionException {
+        try {
+            final InputStream is = new FileInputStream( file.getAbsolutePath() );
+
+            try {
+                return classPool.makeClass( is );
+            }
+            catch (IOException e) {
+                String msg = "Javassist unable to load class in preparation for enhancing: " + file.getAbsolutePath();
+                if ( failOnError ) {
+                    throw new MojoExecutionException( msg, e );
+                }
+                getLog().warn( msg );
+                return null;
+            }
+            finally {
+                try {
+                    is.close();
+                }
+                catch (IOException e) {
+                    getLog().info( "Was unable to close InputStream : " + file.getAbsolutePath(), e );
+                }
+            }
+        }
+        catch (FileNotFoundException e) {
+            // should never happen, but...
+            String msg = "Unable to locate class file for InputStream: " + file.getAbsolutePath();
+            if ( failOnError ) {
+                throw new MojoExecutionException( msg, e );
+            }
+            getLog().warn( msg );
+            return null;
+        }
     }
     
     private ClassLoader toClassLoader(List<File> runtimeClasspath) throws MojoExecutionException {
