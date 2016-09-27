@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -39,6 +40,8 @@ import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.utils.KieHelper;
 import org.kie.maven.plugin.BytecodeInjectReactive;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -46,53 +49,58 @@ import javassist.CtClass;
 import javassist.NotFoundException;
 
 public class XPathTest {
+    private static final Logger LOG = LoggerFactory.getLogger(XPathTest.class);
+    
     @BeforeClass
     public static void init() throws Exception {
-        String aname = ReactiveObject.class.getPackage().getName().replaceAll("\\.", "/") + "/" +  ReactiveObject.class.getSimpleName()+".class";
-        System.out.println(aname);
-        String apath = ClassLoader.getSystemClassLoader().getResource( aname).getPath();
-        System.out.println( apath );
-        String path = null;
-        if (apath.contains("!")) {
-            path = apath.substring(0, apath.indexOf("!"));
-        } else {
-            path = "file:"+apath.substring(0, apath.indexOf(aname));
-        }
-        System.out.println( path );
-        
-        File f = new File(new URI(path));
-        
         ClassPool cp = new ClassPool(null);
         cp.appendSystemPath();
-        cp.appendClassPath(f.getAbsolutePath());
+        cp.appendClassPath(BytecodeInjectReactive.classpathFromClass(ReactiveObject.class));
+        
         BytecodeInjectReactive enhancer = BytecodeInjectReactive.newInstance(cp);
         
+        /*
+           BYTECODE LOADING WARNING: in the following, ensure class is passed as canonical String representation,
+           and NOT as a Clazz.class.getCanonicalName(). This is because yes technically it would be possible to
+           classload the new instrumented and bytecode injected class in a separate classloader
+           HOWEVER it would just make more trouble more down during actual testing.
+           This is because if here a class is identified as Clazz.class.getCanonicalName()
+           it would be classloaded and remain loaded as the original class,
+           hence later in the test there is no way to reload the same class as the bytecode instrumented version
+           which is the ultimate intention behind of these tests.
+         */
         byte[] personBytecode = enhancer.test2("org.drools.compiler.xpath.tobeinstrumented.model.Person");
         byte[] schoolBytecode = enhancer.test2("org.drools.compiler.xpath.tobeinstrumented.model.School");
         byte[] childBytecode = enhancer.test2("org.drools.compiler.xpath.tobeinstrumented.model.Child");
         
         ClassPool cp2 = new ClassPool(null);
         cp2.appendSystemPath();
-        cp2.appendClassPath(f.getAbsolutePath());
+        cp2.appendClassPath(BytecodeInjectReactive.classpathFromClass(ReactiveObject.class));
         
-        CtClass personCtClass = cp2.makeClass(new ByteArrayInputStream(personBytecode));
-        Class<?> class1 = personCtClass.toClass();
-        Arrays.stream(class1.getMethods()).forEach(System.out::println);
+        loadClassAndUtils(cp2, personBytecode);
+        loadClassAndUtils(cp2, childBytecode);
+        loadClassAndUtils(cp2, schoolBytecode);
+    }
+    
+    private static void loadClassAndUtils(ClassPool cp, byte[] bytecode) throws Exception {
+        CtClass theCtClass = cp.makeClass(new ByteArrayInputStream(bytecode));
+        Class<?> class1 = theCtClass.toClass();
         
-        CtClass childCtClass = cp2.makeClass(new ByteArrayInputStream(childBytecode));
-        Class<?> classChild = childCtClass.toClass();
-        System.out.println("CHILD:");
-        Arrays.stream(classChild.getMethods()).forEach(System.out::println);
+        LOG.info("Bytecode-injected class for {} now having the following methods:", theCtClass.getName());
+        for ( Method m : class1.getMethods() ) {
+            LOG.info(" {}", m );
+        }
         
         File dir = new File("./target/JAVASSIST/");
         dir.mkdirs();
-        CtClass schooltClass = cp2.makeClass(new ByteArrayInputStream(schoolBytecode));
-        schooltClass.toClass();
-        File schoolClassFile = new File("./target/JAVASSIST/School.class");
-        schoolClassFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(schoolClassFile);
-        fos.write(schoolBytecode);
+        // please note it is INTENTIONAL to write the file with package name part of the file itself, for easier browsing
+        // anyway the directory is NOT intended for classloading, but just for browsing bytecode for decompilation.
+        File bytecodeFile = new File(dir, theCtClass.getPackageName() + theCtClass.getName() + ".class" );
+        bytecodeFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(bytecodeFile);
+        fos.write(bytecode);
         fos.close();
+        LOG.info("Written bytecode for {} in file: {}.", theCtClass.getName(), bytecodeFile);
     }
     
     /**
@@ -345,7 +353,7 @@ public class XPathTest {
     }
     
     /**
-     * Copied from drools-compiler.
+     * Copied from drools-compiler ( fixed with DROOLS-1302 ) 
      */
     @Test
     public void testListReactive() {

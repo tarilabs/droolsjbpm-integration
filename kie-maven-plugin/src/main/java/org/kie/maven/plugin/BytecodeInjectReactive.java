@@ -75,6 +75,23 @@ public class BytecodeInjectReactive {
         return new BytecodeInjectReactive(cp);
     }
     
+    /**
+     * Utility method for returning the (inferred) classpath of classloading from the given Class.
+     * @param clazz the enclosing Class.
+     * @return the (inferred) classpath of clazz
+     */
+    public static String classpathFromClass(Class<?> clazz) {
+        String aname = clazz.getPackage().getName().replaceAll("\\.", "/") + "/" +  clazz.getSimpleName()+".class";
+        String apath = ClassLoader.getSystemClassLoader().getResource( aname).getPath();
+        String path = null;
+        if (apath.contains("!")) {
+            path = apath.substring(0, apath.indexOf("!")).replace("file:", "");
+        } else {
+            path = apath.substring(0, apath.indexOf(aname));
+        }
+        return path;
+    }
+    
     private void init() {
         this.writeMethods = new HashMap<String, CtMethod>();
     }
