@@ -113,6 +113,12 @@ public class BytecodeInjectReactive {
                 "}", droolsPojo );
         droolsPojo.addMethod(addLeftTupleCtMethod);
         
+        final CtMethod removeLeftTupleCtMethod = CtNewMethod.make(
+                "public void removeLeftTuple("+Tuple.class.getName()+" leftTuple) {\n" + 
+                "    $$_drools_lts.remove(leftTuple);\n" + 
+                "}", droolsPojo );
+        droolsPojo.addMethod(removeLeftTupleCtMethod);
+        
         for (CtField f : collectReactiveFields(droolsPojo)) {
             System.out.println(f);
             writeMethods.put(f.getName(), makeWriter(droolsPojo, f));

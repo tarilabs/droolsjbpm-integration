@@ -69,6 +69,7 @@ public class XPathTest {
         
         byte[] personBytecode = enhancer.test2("org.drools.compiler.xpath.tobeinstrumented.model.Person");
         byte[] schoolBytecode = enhancer.test2("org.drools.compiler.xpath.tobeinstrumented.model.School");
+        byte[] childBytecode = enhancer.test2("org.drools.compiler.xpath.tobeinstrumented.model.Child");
         
         ClassPool cp2 = new ClassPool(null);
         cp2.appendSystemPath();
@@ -77,6 +78,11 @@ public class XPathTest {
         CtClass personCtClass = cp2.makeClass(new ByteArrayInputStream(personBytecode));
         Class<?> class1 = personCtClass.toClass();
         Arrays.stream(class1.getMethods()).forEach(System.out::println);
+        
+        CtClass childCtClass = cp2.makeClass(new ByteArrayInputStream(childBytecode));
+        Class<?> classChild = childCtClass.toClass();
+        System.out.println("CHILD:");
+        Arrays.stream(classChild.getMethods()).forEach(System.out::println);
         
         File dir = new File("./target/JAVASSIST/");
         dir.mkdirs();
@@ -338,8 +344,10 @@ public class XPathTest {
         assertTrue( teenagers.contains( "Debbie" ) );
     }
     
+    /**
+     * Copied from drools-compiler.
+     */
     @Test
-    @Ignore("currently working on this on drools-compiler")
     public void testListReactive() {
         String drl =
                 "import org.drools.compiler.xpath.tobeinstrumented.model.*;\n" +
@@ -370,7 +378,6 @@ public class XPathTest {
         assertTrue(ksession.getObjects().contains(charlie));
         assertTrue(ksession.getObjects().contains(debbie));
         
-        debbie.setAge( 20 );
         school.removeChild(debbie);
         ksession.fireAllRules();
         assertTrue(ksession.getObjects().contains(charlie));
@@ -379,7 +386,7 @@ public class XPathTest {
         school.addChild( debbie );
         ksession.fireAllRules();
         assertTrue(ksession.getObjects().contains(charlie));
-        assertFalse(ksession.getObjects().contains(debbie));
+        assertTrue(ksession.getObjects().contains(debbie));
         
         debbie.setAge( 20 );
         ksession.fireAllRules();
