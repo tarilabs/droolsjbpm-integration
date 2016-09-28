@@ -43,11 +43,19 @@ public class InjectReactiveMojo extends AbstractKieMojo {
     @Parameter(required = true, defaultValue = "${project.build.outputDirectory}")
     private File outputDirectory;
     
-    @Parameter(property = "failOnError", defaultValue = "true")
+    @Parameter(property = "instrument-failOnError", defaultValue = "true")
     private boolean failOnError = true;
+    
+    @Parameter(property = "instrument-packages", defaultValue = "*")
+    private String[] packages;
+    
     
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        for (String p : packages) {
+            getLog().info("p: "+p);    
+        }
+        
         // Perform a depth first search for sourceSet
         File root = outputDirectory;
         if ( !root.exists() ) {
@@ -298,4 +306,24 @@ public class InjectReactiveMojo extends AbstractKieMojo {
         }
     }
 
+    public static String regexpFromPattern(String pattern) {
+        return pattern.replaceAll("\\.", "\\\\.").replaceAll("\\*", ".*");
+    }
+    
+    public static String[] convertAllPatternToRegExp(String[] patterns) {
+        String[] result = new String[patterns.length];
+        for (int i=0; i<patterns.length; i++) {
+            result[i] = regexpFromPattern(patterns[i]);
+        }
+        return result;
+    }
+    
+    public static boolean isPackageNameIncluded(String packageName, String[] regexps) {
+        for (String r : regexps) {
+            if (packageName.matches(r)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
