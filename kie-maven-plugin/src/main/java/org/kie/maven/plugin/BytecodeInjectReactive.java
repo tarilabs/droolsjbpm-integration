@@ -137,7 +137,7 @@ public class BytecodeInjectReactive {
         droolsPojo.addMethod(removeLeftTupleCtMethod);
         
         for (CtField f : collectReactiveFields(droolsPojo)) {
-            System.out.println(f);
+            LOG.debug("Preparing field writer method for field: {}.", f);
             writeMethods.put(f.getName(), makeWriter(droolsPojo, f));
         }
         
@@ -207,9 +207,8 @@ public class BytecodeInjectReactive {
     
     private static CtMethod write(CtClass target, String format, Object ... args) throws CannotCompileException {
         final String body = String.format( format, args );
-        System.out.printf( "writing method into [%s]:%n%s%n", target.getName(), body );
+        LOG.debug( "writing method into [{}]:\n{}\n", target.getName(), body );
         final CtMethod method = CtNewMethod.make( body, target );
-        System.err.println(body);
         target.addMethod( method );
         return method;
     }
@@ -240,7 +239,8 @@ public class BytecodeInjectReactive {
     private String buildWriteInterceptionBodyFragment(CtField field) throws NotFoundException {
         // remember: In the source text given to setBody(), the identifiers starting with $ have special meaning
         // $0, $1, $2, ...     this and actual parameters 
-        System.out.println(field.getType().getClass() + " " + field.getType());
+        
+        LOG.debug("buildWriteInterceptionBodyFragment: {} {}", field.getType().getClass(), field.getType());
         
         if ( field.getType().subtypeOf( cp.get(List.class.getName()) ) ) {
             return String.format(

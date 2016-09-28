@@ -47,13 +47,29 @@ public class InjectReactiveIntegrationTest extends KieMavenPluginBaseIntegration
                 foundReactiveObjectInterface = true;
             }
         }
+        // the ReactiveObject interface method are injected by the bytecode instrumenter, better check they are indeed available..
+        boolean containsGetLeftTuple = checkContainsMethod(personClass, "getLeftTuples");
+        boolean containsAddLeftTuple = checkContainsMethod(personClass, "addLeftTuple");
+        boolean containsRemoveLeftTuple = checkContainsMethod(personClass, "removeLeftTuple");
+        
         boolean foundReactiveInjectedMethods = false;
         for ( Method m : personClass.getMethods() ){
             if ( m.getName().startsWith(BytecodeInjectReactive.DROOLS_PREFIX) ) {
                 foundReactiveInjectedMethods = true;
             }
         }
-        return foundReactiveInjectedMethods && foundReactiveObjectInterface;
+        return foundReactiveObjectInterface
+                && containsGetLeftTuple && containsAddLeftTuple && containsRemoveLeftTuple
+                && foundReactiveInjectedMethods ;
+    }
+
+    private boolean checkContainsMethod(Class<?> personClass, Object methodName) {
+        for ( Method m : personClass.getMethods() ){
+            if (m.getName().equals(methodName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

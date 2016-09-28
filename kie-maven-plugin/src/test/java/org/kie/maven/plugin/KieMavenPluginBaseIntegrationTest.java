@@ -36,6 +36,7 @@ abstract public class KieMavenPluginBaseIntegrationTest {
                 .forkedBuilder()
                 // FIXME ensure -X option is used while performing all integration tests
 //                .withCliOptions("-X")
+                .withCliOptions("-Dorg.slf4j.simpleLogger.defaultLogLevel=debug")
                 .build();
     }
 
