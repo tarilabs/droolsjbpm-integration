@@ -1,21 +1,15 @@
 package org.kie.maven.plugin;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 
 import org.drools.core.phreak.ReactiveObject;
-import org.drools.core.phreak.ReactiveObjectUtil;
-import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.MockingDetails;
-import org.mockito.Mockito;
-import org.mockito.invocation.Invocation;
 
-import static org.mockito.Mockito.*;
+import org.junit.Test;
 
 import io.takari.maven.testing.executor.MavenExecutionResult;
 import io.takari.maven.testing.executor.MavenRuntime;
@@ -42,21 +36,24 @@ public class InjectReactiveIntegrationTest extends KieMavenPluginBaseIntegration
         ClassLoader cl = new URLClassLoader( new URL[]{ classDir.toURI().toURL(), 
                 new File(BytecodeInjectReactive.classpathFromClass(ReactiveObject.class)).toURI().toURL() }, null );
         
-       
-        Class<?> personClass = cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.Adult");
-        Object mock = mock(personClass);
-        Constructor<?> personConstructor = personClass.getConstructor(String.class, int.class);
-        Object personInstance = personConstructor.newInstance("Matteo", 34);
-        System.out.println(personInstance.getClass());
-        Method getAgeMethod = personClass.getMethod("getAge");
-        System.out.println( getAgeMethod.invoke(personInstance) );
-        Method setAgeMethod = personClass.getMethod("setAge", int.class);
-        setAgeMethod.invoke(personInstance, 35);
-        System.out.println( getAgeMethod.invoke(personInstance) );
+        assertTrue( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.Adult") ) );
         
-        MockingDetails a = mockingDetails(mock);
-        Collection<Invocation> c = a.getInvocations();
-        c.forEach(System.out::println);
+    }
+
+    private boolean looksLikeInstrumentedClass(Class<?> personClass) {
+        boolean foundReactiveObjectInterface = false;
+        for ( Class<?> i : personClass.getInterfaces() ){
+            if ( i.getName().equals(ReactiveObject.class.getName()) ) {
+                foundReactiveObjectInterface = true;
+            }
+        }
+        boolean foundReactiveInjectedMethods = false;
+        for ( Method m : personClass.getMethods() ){
+            if ( m.getName().startsWith(BytecodeInjectReactive.DROOLS_PREFIX) ) {
+                foundReactiveInjectedMethods = true;
+            }
+        }
+        return foundReactiveInjectedMethods && foundReactiveObjectInterface;
     }
 
 }

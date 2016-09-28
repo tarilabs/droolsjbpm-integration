@@ -56,9 +56,9 @@ import javassist.bytecode.stackmap.MapMaker;
  * kudos to hibernate-enhance-maven-plugin.
  */
 public class BytecodeInjectReactive {
-    private static final String DROOLS_PREFIX = "$$_drools_";
-    private static final String FIELD_WRITER_PREFIX = DROOLS_PREFIX + "write_";
-    private static final String DROOLS_LIST_OF_TUPLES = DROOLS_PREFIX + "lts";
+    public static final String DROOLS_PREFIX = "$$_drools_";
+    public static final String FIELD_WRITER_PREFIX = DROOLS_PREFIX + "write_";
+    public static final String DROOLS_LIST_OF_TUPLES = DROOLS_PREFIX + "lts";
 
     public static final Logger LOG = LoggerFactory.getLogger(BytecodeInjectReactive.class);
 
