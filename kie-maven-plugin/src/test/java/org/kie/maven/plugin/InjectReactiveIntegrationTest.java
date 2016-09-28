@@ -5,11 +5,16 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
 
 import org.drools.core.phreak.ReactiveObject;
 import org.drools.core.phreak.ReactiveObjectUtil;
 import org.junit.Test;
 import org.mockito.Matchers;
+import org.mockito.MockingDetails;
+import org.mockito.Mockito;
+import org.mockito.invocation.Invocation;
+
 import static org.mockito.Mockito.*;
 
 import io.takari.maven.testing.executor.MavenExecutionResult;
@@ -37,13 +42,21 @@ public class InjectReactiveIntegrationTest extends KieMavenPluginBaseIntegration
         ClassLoader cl = new URLClassLoader( new URL[]{ classDir.toURI().toURL(), 
                 new File(BytecodeInjectReactive.classpathFromClass(ReactiveObject.class)).toURI().toURL() }, null );
         
+       
         Class<?> personClass = cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.Adult");
         Constructor<?> personConstructor = personClass.getConstructor(String.class, int.class);
         Object personInstance = personConstructor.newInstance("Matteo", 34);
+        System.out.println(personInstance.getClass());
+        Object mock = mock(personInstance.getClass());
+        Method getAgeMethod = personClass.getMethod("getAge");
+        System.out.println( getAgeMethod.invoke(mock) );
         Method setAgeMethod = personClass.getMethod("setAge", int.class);
-        setAgeMethod.invoke(personInstance, 35);
+        setAgeMethod.invoke(mock, 35);
+        System.out.println( getAgeMethod.invoke(mock) );
         
-        
+        MockingDetails a = mockingDetails(mock);
+        Collection<Invocation> c = a.getInvocations();
+        c.forEach(System.out::println);
     }
 
 }
