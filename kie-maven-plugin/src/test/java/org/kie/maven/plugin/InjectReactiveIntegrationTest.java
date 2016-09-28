@@ -44,15 +44,15 @@ public class InjectReactiveIntegrationTest extends KieMavenPluginBaseIntegration
         
        
         Class<?> personClass = cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.Adult");
+        Object mock = mock(personClass);
         Constructor<?> personConstructor = personClass.getConstructor(String.class, int.class);
         Object personInstance = personConstructor.newInstance("Matteo", 34);
         System.out.println(personInstance.getClass());
-        Object mock = mock(personInstance.getClass());
         Method getAgeMethod = personClass.getMethod("getAge");
-        System.out.println( getAgeMethod.invoke(mock) );
+        System.out.println( getAgeMethod.invoke(personInstance) );
         Method setAgeMethod = personClass.getMethod("setAge", int.class);
-        setAgeMethod.invoke(mock, 35);
-        System.out.println( getAgeMethod.invoke(mock) );
+        setAgeMethod.invoke(personInstance, 35);
+        System.out.println( getAgeMethod.invoke(personInstance) );
         
         MockingDetails a = mockingDetails(mock);
         Collection<Invocation> c = a.getInvocations();
