@@ -54,6 +54,7 @@ public class InjectReactiveIntegrationTest extends KieMavenPluginBaseIntegration
         assertTrue( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.UsingADependencyClass") ) );
         assertTrue( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.UsingSpecializedList") ) );
     }
+    
     @Test
     public void testBasicBytecodeInjectionSelected() throws Exception {
         File basedir = resources.getBasedir("kjar-5-bytecode-inject-selected");

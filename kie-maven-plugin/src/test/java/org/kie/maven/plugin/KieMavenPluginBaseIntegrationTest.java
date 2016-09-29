@@ -34,9 +34,9 @@ abstract public class KieMavenPluginBaseIntegrationTest {
     public KieMavenPluginBaseIntegrationTest(MavenRuntime.MavenRuntimeBuilder builder) throws Exception {
         this.mavenRuntime = builder
                 .forkedBuilder()
-                // FIXME ensure -X option is used while performing all integration tests
                 .withCliOptions("-X")
-                .withCliOptions("-Dorg.slf4j.simpleLogger.defaultLogLevel=debug")
+                // To enable logging on the internal classes of the plug-in:
+                //  .withCliOptions("-Dorg.slf4j.simpleLogger.defaultLogLevel=debug")
                 .build();
     }
 
