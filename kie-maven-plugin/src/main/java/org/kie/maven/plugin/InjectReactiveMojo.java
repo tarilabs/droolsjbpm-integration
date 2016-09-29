@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -43,17 +44,25 @@ public class InjectReactiveMojo extends AbstractKieMojo {
     @Parameter(required = true, defaultValue = "${project.build.outputDirectory}")
     private File outputDirectory;
     
-    @Parameter(property = "instrument-failOnError", defaultValue = "true")
+    @Parameter(alias = "instrument-failOnError", property = "kie.instrument.failOnError", defaultValue = "true")
     private boolean failOnError = true;
     
-    @Parameter(property = "instrument-packages", defaultValue = "*")
-    private String[] packages;
-    
+    /*
+     * DO NOT add a default to @Parameter annotation as it buggy to assign it regardless
+     */
+    @Parameter(alias = "instrument-packages", property = "kie.instrument.packages")
+    private String[] instrumentPackages;
     
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        for (String p : packages) {
-            getLog().info("p: "+p);    
+        if (instrumentPackages.length == 0) {
+            getLog().debug("No configuration passed for instrument-packages, default to '*' .");
+            instrumentPackages = new String[]{"*"};
+        }
+        getLog().debug("Configured with resolved instrument-packages: "+Arrays.asList(instrumentPackages));
+        List<String> packageRegExps = convertAllToPkgRegExps(instrumentPackages);
+        for (String prefix : packageRegExps) {
+            getLog().debug(" "+prefix);
         }
         
         // Perform a depth first search for sourceSet
@@ -79,6 +88,11 @@ public class InjectReactiveMojo extends AbstractKieMojo {
             classPool.appendClassPath(outputDirectory.getAbsolutePath());
         } catch (Exception e) {
             getLog().error( "Unable to append path for outputDirectory : "+outputDirectory );
+            if (failOnError) {
+                throw new MojoExecutionException("Unable to append path for outputDirectory : "+outputDirectory, e);
+            } else {
+                return;
+            }
         }
         // Append classpath for ReactiveObject.class by using the JAR of the kie-maven-plugin
         try {
@@ -102,6 +116,11 @@ public class InjectReactiveMojo extends AbstractKieMojo {
         } catch (Exception e) {
             getLog().error( "Unable to locate path for ReactiveObject." );
             e.printStackTrace();
+            if (failOnError) {
+                throw new MojoExecutionException("Unable to locate path for ReactiveObject.", e);
+            } else {
+                return;
+            }
         }
         // Append classpath for the project dependencies
         for ( URL url : dependenciesURLs() ) {
@@ -110,6 +129,11 @@ public class InjectReactiveMojo extends AbstractKieMojo {
                 classPool.appendClassPath(url.getPath());
             } catch (Exception e) {
                 getLog().error( "Unable to append path for project dependency : "+url.getPath() );
+                if (failOnError) {
+                    throw new MojoExecutionException( "Unable to append path for project dependency : "+url.getPath(), e);
+                } else {
+                    return;
+                }
             }
         }
         
@@ -121,8 +145,10 @@ public class InjectReactiveMojo extends AbstractKieMojo {
                 continue;
             }
 
-            // FIXME add package check here?
-            if ( false ) {
+            getLog().info( "Evaluating class [" + ctClass.getName() + "]" );
+            getLog().info( ctClass.getPackageName() );
+            getLog().info( ""+Arrays.asList( packageRegExps ) );
+            if ( !isPackageNameIncluded(ctClass.getPackageName(), packageRegExps) ) {
                 continue;
             }
 
@@ -136,6 +162,11 @@ public class InjectReactiveMojo extends AbstractKieMojo {
             } catch (Exception e) {
                 getLog().error( "ERROR while trying to enhanced class [" + ctClass.getName() + "]" );
                 e.printStackTrace();
+                if (failOnError) {
+                    throw new MojoExecutionException("ERROR while trying to enhanced class [" + ctClass.getName() + "]", e);
+                } else {
+                    return;
+                }
             }
             
         }
@@ -305,20 +336,28 @@ public class InjectReactiveMojo extends AbstractKieMojo {
             getLog().warn( msg );
         }
     }
-
-    public static String regexpFromPattern(String pattern) {
-        return pattern.replaceAll("\\.", "\\\\.").replaceAll("\\*", ".*");
-    }
     
-    public static String[] convertAllPatternToRegExp(String[] patterns) {
-        String[] result = new String[patterns.length];
-        for (int i=0; i<patterns.length; i++) {
-            result[i] = regexpFromPattern(patterns[i]);
+    public static List<String> convertAllToPkgRegExps(String[] patterns) {
+        List<String> result = new ArrayList<>();
+        for (String p : patterns) {
+            if ( p.equals("*") ) {
+                result.add("^.*$");
+            } else if ( !p.endsWith(".*") ) {
+                // a pattern like com.acme should match for com.acme only (not the subpackages).
+                result.add( "^" + p.replaceAll("\\.", "\\\\.").replaceAll("\\*", ".*") + "$" );
+            } else if ( p.endsWith(".*") ) {
+                // a pattern like com.acme.* should match for com.acme and all subpackages of com.acme.*
+                result.add( "^" + p.substring(0, p.length()-2).replaceAll("\\.", "\\\\.").replaceAll("\\*", ".*") + "$" );
+                result.add( "^" + p.replaceAll("\\.", "\\\\.").replaceAll("\\*", ".*") + "$" );
+            } else {
+                // unexpected input will be passed as-is.
+                result.add(p);  
+            }
         }
         return result;
     }
     
-    public static boolean isPackageNameIncluded(String packageName, String[] regexps) {
+    public static boolean isPackageNameIncluded(String packageName, List<String> regexps) {
         for (String r : regexps) {
             if (packageName.matches(r)) {
                 return true;

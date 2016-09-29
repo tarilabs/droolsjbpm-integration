@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.kie</groupId>
-  <artifactId>kie-maven-plugin-test-kjar-4</artifactId>
+  <artifactId>kie-maven-plugin-test-kjar-5</artifactId>
   <version>1.0.0.Final</version>
 
   <packaging>kjar</packaging>
@@ -36,6 +36,11 @@
         <version>${it-plugin.version}</version>
         <extensions>true</extensions>
         <configuration>
+            <instrument-failOnError>true</instrument-failOnError>
+            <instrument-packages>
+                <instrumentPackage>to.instrument</instrumentPackage>
+                <instrumentPackage>org.drools.compiler.xpath.tobeinstrumented.*</instrumentPackage>
+            </instrument-packages>
         </configuration>
       </plugin>
       <!-- locating and copying dependency JARs will be used conveniently by testing for sandboxed classloading purposes: -->

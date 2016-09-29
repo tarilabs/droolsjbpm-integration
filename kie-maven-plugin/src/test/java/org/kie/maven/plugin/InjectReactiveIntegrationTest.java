@@ -3,9 +3,12 @@ package org.kie.maven.plugin;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.drools.core.phreak.ReactiveObject;
 
@@ -33,11 +36,60 @@ public class InjectReactiveIntegrationTest extends KieMavenPluginBaseIntegration
         System.out.println(classDir);
         System.out.println(classDir.exists());
         
-        ClassLoader cl = new URLClassLoader( new URL[]{ classDir.toURI().toURL(), 
-                new File(BytecodeInjectReactive.classpathFromClass(ReactiveObject.class)).toURI().toURL() }, null );
+        List<URL> classloadingURLs = new ArrayList<>();
+        classloadingURLs.add(classDir.toURI().toURL());
+        classloadingURLs.add(new File(BytecodeInjectReactive.classpathFromClass(ReactiveObject.class)).toURI().toURL());
+        File libDir = new File(basedir, "target/lib");
+        for (File jar : libDir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".jar");
+            }
+        })) {
+            classloadingURLs.add(jar.toURI().toURL());
+        }
+        
+        ClassLoader cl = new URLClassLoader( classloadingURLs.toArray(new URL[]{}), null );
         
         assertTrue( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.Adult") ) );
+        assertTrue( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.UsingADependencyClass") ) );
+        assertTrue( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.UsingSpecializedList") ) );
+    }
+    @Test
+    public void testBasicBytecodeInjectionSelected() throws Exception {
+        File basedir = resources.getBasedir("kjar-5-bytecode-inject-selected");
+        MavenExecutionResult result = mavenRuntime
+                .forProject(basedir)
+                .execute("clean", "install");
+        result.assertErrorFreeLog();
         
+        File classDir = new File(basedir, "target/classes");
+        
+        System.out.println(classDir);
+        System.out.println(classDir.exists());
+        
+        List<URL> classloadingURLs = new ArrayList<>();
+        classloadingURLs.add(classDir.toURI().toURL());
+        classloadingURLs.add(new File(BytecodeInjectReactive.classpathFromClass(ReactiveObject.class)).toURI().toURL());
+        File libDir = new File(basedir, "target/lib");
+        for (File jar : libDir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".jar");
+            }
+        })) {
+            classloadingURLs.add(jar.toURI().toURL());
+        }
+        
+        ClassLoader cl = new URLClassLoader( classloadingURLs.toArray(new URL[]{}), null );
+        
+        assertTrue ( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.Adult") ) );
+        assertTrue ( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.UsingADependencyClass") ) );
+        assertTrue ( looksLikeInstrumentedClass( cl.loadClass("org.drools.compiler.xpath.tobeinstrumented.model.UsingSpecializedList") ) );
+        assertTrue ( looksLikeInstrumentedClass( cl.loadClass("to.instrument.Adult") ) );
+        assertTrue ( looksLikeInstrumentedClass( cl.loadClass("to.instrument.UsingADependencyClass") ) );
+        assertTrue ( looksLikeInstrumentedClass( cl.loadClass("to.instrument.UsingSpecializedList") ) );
+        assertFalse( looksLikeInstrumentedClass( cl.loadClass("to.not.instrument.Adult") ) );
+        assertFalse( looksLikeInstrumentedClass( cl.loadClass("to.not.instrument.UsingADependencyClass") ) );
+        assertFalse( looksLikeInstrumentedClass( cl.loadClass("to.not.instrument.UsingSpecializedList") ) );
     }
 
     private boolean looksLikeInstrumentedClass(Class<?> personClass) {

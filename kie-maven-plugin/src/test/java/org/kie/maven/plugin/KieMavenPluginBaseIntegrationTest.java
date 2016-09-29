@@ -35,7 +35,7 @@ abstract public class KieMavenPluginBaseIntegrationTest {
         this.mavenRuntime = builder
                 .forkedBuilder()
                 // FIXME ensure -X option is used while performing all integration tests
-//                .withCliOptions("-X")
+                .withCliOptions("-X")
                 .withCliOptions("-Dorg.slf4j.simpleLogger.defaultLogLevel=debug")
                 .build();
     }
