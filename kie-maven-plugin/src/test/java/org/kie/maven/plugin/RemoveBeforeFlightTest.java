@@ -7,6 +7,6 @@ public class RemoveBeforeFlightTest {
     @Test
     public void testFail() {
         org.junit.Assert.fail("restore -X version for base integration test");
-        org.junit.Assert.fail("remove it-plugin.version from inner project");
+        org.junit.Assert.fail("remove it-plugin.version from inner Maven projects used for testing with Takari.");
     }
 }

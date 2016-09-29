@@ -68,16 +68,16 @@ public class InjectReactiveMojo extends AbstractKieMojo {
         // Perform a depth first search for sourceSet
         File root = outputDirectory;
         if ( !root.exists() ) {
-            getLog().info( "Skipping Hibernate enhancement plugin execution since there is no classes dir " + outputDirectory );
+            getLog().info( "Skipping InjectReactive enhancement plugin execution since there is no classes dir " + outputDirectory );
             return;
         }
         walkDir( root );
         if ( sourceSet.isEmpty() ) {
-            getLog().info( "Skipping Hibernate enhancement plugin execution since there are no classes to enhance on " + outputDirectory );
+            getLog().info( "Skipping InjectReactive enhancement plugin execution since there are no classes to enhance on " + outputDirectory );
             return;
         }
 
-        getLog().info( "Starting Hibernate enhancement for classes on " + outputDirectory );
+        getLog().info( "Starting InjectReactive enhancement for classes on " + outputDirectory );
         final ClassLoader classLoader = toClassLoader( Collections.singletonList( root ) );
         
         

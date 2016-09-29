@@ -15,12 +15,7 @@
 
 package org.kie.maven.plugin;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +60,6 @@ public class BytecodeInjectReactive {
     private Map<String, CtMethod> writeMethods;
     private ClassPool cp;
     
-    private BytecodeInjectReactive() { }
     public BytecodeInjectReactive(ClassPool cp) {
         this.cp = cp;
         init();
@@ -143,7 +137,7 @@ public class BytecodeInjectReactive {
         
         enhanceAttributesAccess(droolsPojo);
         
-        // first call toClass before the original class is loaded, it will persist the bytecode instrumentation changes in the classloader.
+        // first call CtClass.toClass() before the original class is loaded, it will persist the bytecode instrumentation changes in the classloader.
         return droolsPojo.toBytecode();
     }
     
