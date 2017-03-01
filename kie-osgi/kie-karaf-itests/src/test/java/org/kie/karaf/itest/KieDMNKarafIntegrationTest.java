@@ -67,8 +67,8 @@ public class KieDMNKarafIntegrationTest extends AbstractKarafIntegrationTest {
     }
 
     @Test
-    public void buildKieBaseFromSimpleGuidedDTable() throws Exception {
-        DMNRuntime runtime = (DMNRuntime) createKieDMNRuntime(SIMPLE_DMN_FILE);
+    public void testDMNbasic() throws Exception {
+        DMNRuntime runtime = createKieDMNRuntime(SIMPLE_DMN_FILE);
         assertTrue( runtime.getModels().size() > 0 );
     }
 
@@ -94,7 +94,7 @@ public class KieDMNKarafIntegrationTest extends AbstractKarafIntegrationTest {
         };
     }
 
-    private Object createKieDMNRuntime(String... resourcePaths) {
+    private DMNRuntime createKieDMNRuntime(String... resourcePaths) {
         KieHelper kieHelper = new KieHelper();
         ClassLoader bundleClassloader = getClass().getClassLoader();
         kieHelper.setClassLoader(bundleClassloader);
