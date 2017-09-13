@@ -17,8 +17,10 @@
 package org.kie.karaf.itest.blueprint;
 
 import org.kie.karaf.itest.AbstractKarafIntegrationTest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kie.api.internal.utils.ServiceDiscoveryImpl;
 import org.kie.api.runtime.KieSession;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
@@ -26,7 +28,11 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.karaf.options.LogLevelOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
+import org.ops4j.pax.exam.util.PathUtils;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
@@ -35,13 +41,15 @@ import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.streamBundle;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
+import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.tinybundles.core.TinyBundles.bundle;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
 public class KieBlueprintDependencyKarafIntegrationTest extends AbstractKarafIntegrationTest {
-
+    private static final transient Logger logger = LoggerFactory.getLogger(KieBlueprintDependencyKarafIntegrationTest.class);
+    
     private static final String BLUEPRINT_XML_LOCATION = "/org/kie/karaf/itest/blueprint/kie-beans-blueprint.xml";
     private static final String DRL_LOCATION = "/drl_kiesample_dependency/Hal1.drl";
 
@@ -52,6 +60,16 @@ public class KieBlueprintDependencyKarafIntegrationTest extends AbstractKarafInt
     public void testKieBase() throws Exception {
         assertNotNull(kieSession);
         assertTrue("KieBase contains no packages?", kieSession.getKieBase().getKiePackages().size() > 0);
+    }
+    
+    @Test
+    public void bundleContextShouldNotBeNull() throws Exception {
+       assertNotNull(bundleContext);
+       for (Bundle b : bundleContext.getBundles()) {
+           logger.warn("Bundle: " + b.getSymbolicName());
+       }
+       System.out.println( bundleContext.getServiceReference(ServiceDiscoveryImpl.class) );
+       System.out.println( bundleContext.getServiceReference(KieSession.class) );
     }
 
     @Configuration

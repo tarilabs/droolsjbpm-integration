@@ -63,7 +63,7 @@ public class KieBlueprintImportIntegrationTest extends AbstractKarafIntegrationT
         Assert.assertNotNull(kieScanner);
     }
 
-    @Test @Ignore
+    @Test
     public void kieSessionOldPersonTest() {
         Assert.assertNotNull(kieSession);
 
@@ -100,7 +100,7 @@ public class KieBlueprintImportIntegrationTest extends AbstractKarafIntegrationT
                 // Don't bother with local console output as it just ends up cluttering the logs
                 configureConsole().ignoreLocalConsole(),
                 // Force the log level to INFO so we have more details during the test.  It defaults to WARN.
-                logLevel(LogLevelOption.LogLevel.WARN),
+                logLevel(LogLevelOption.LogLevel.DEBUG),
 
                 // Option to be used to do remote debugging
                 // debugConfiguration("5005", true),
@@ -130,8 +130,8 @@ public class KieBlueprintImportIntegrationTest extends AbstractKarafIntegrationT
                                 "org.kie.api.runtime," +
                                 "org.kie.api.builder," +
                                 // junit is acting as a dependency for the rule
-                                "org.junit," +
-                                "*")
+                                "org.junit" 
+                                )
                         .set(Constants.EXPORT_PACKAGE, "org.kie.karaf.itest.blueprint.domain")
                         .set(Constants.BUNDLE_SYMBOLICNAME, "Test-Blueprint-Bundle")
                         .build()).start()

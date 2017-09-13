@@ -164,8 +164,8 @@ public class KieBlueprintScannerReimportIntegrationTest extends AbstractKarafInt
                                 "org.kie.aries.blueprint.helpers," +
                                 "org.kie.api," +
                                 "org.kie.api.runtime," +
-                                "org.kie.api.builder," +
-                                "*")
+                                "org.kie.api.builder"
+                                )
                         .set(Constants.EXPORT_PACKAGE, "org.kie.karaf.itest.blueprint.domain")
                         .set(Constants.BUNDLE_SYMBOLICNAME, "Test-Blueprint-Bundle")
                         .build()).start()

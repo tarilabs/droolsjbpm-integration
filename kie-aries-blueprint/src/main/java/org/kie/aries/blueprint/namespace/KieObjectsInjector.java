@@ -116,6 +116,10 @@ public class KieObjectsInjector implements BeanProcessor {
         }
 
         String pomProperties = ClasspathKieProject.getPomProperties(configFilePath);
+        if (pomProperties == null) {
+            createOsgiKieModule();
+            return;
+        }
         releaseId = ReleaseIdImpl.fromPropertiesString(pomProperties);
         KieModuleModel kieModuleModel = getKieModuleModel();
         injectKieModule(kieModuleModel);

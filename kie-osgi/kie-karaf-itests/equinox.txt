@@ -1,0 +1,126 @@
+17:56:53.820 [main] INFO  o.o.pax.exam.spi.DefaultExamSystem.create:127 - Pax Exam System (Version: 4.3.0) created.
+17:56:53.829 [main] DEBUG o.ops4j.store.intern.TemporaryStore.<init>:59 - Storage Area is /tmp/1501257413827-0
+17:56:53.866 [main] INFO  o.o.pax.exam.junit.impl.ProbeRunner.<init>:74 - creating PaxExam runner for class org.kie.karaf.itest.blueprint.KieBlueprintDependencyKarafIntegrationTest
+17:56:53.867 [main] INFO  o.k.k.i.AbstractKarafIntegrationTest.<clinit>:114 - KIE Project Version : 8.0.0-SNAPSHOT
+17:56:53.875 [main] DEBUG o.ops4j.pax.exam.spi.PaxExamRuntime.getTestContainerFactory:82 - Found TestContainerFactory: org.ops4j.pax.exam.karaf.container.internal.KarafTestContainerFactory
+17:56:53.880 [main] INFO  o.k.k.i.AbstractKarafIntegrationTest.getKarafDistributionOption:152 - *** The karaf version is 2.4.0 ***
+17:56:53.886 [main] INFO  o.k.k.i.AbstractKarafIntegrationTest.getFeaturesUrl:233 - Features URL: mvn:org.kie/kie-karaf-features/8.0.0-SNAPSHOT/xml/features
+17:56:53.896 [main] DEBUG o.ops4j.store.intern.TemporaryStore.<init>:59 - Storage Area is /tmp/ops4j-store-anonymous-2952745825509920861
+17:56:53.897 [main] DEBUG o.o.p.t.core.intern.AsyncRawBuilder.build:40 - make()
+17:56:53.898 [main] DEBUG o.ops4j.store.intern.TemporaryStore.<init>:59 - Storage Area is /tmp/ops4j-store-anonymous-9217479315208664468
+17:56:53.898 [Thread-0] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:77 - Creating manifest from added headers.
+17:56:53.898 [main] DEBUG o.ops4j.store.intern.TemporaryStore.store:65 - Enter store()
+17:56:53.901 [Thread-0] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:88 - Bundle-SymbolicName = Test-Blueprint-Bundle
+17:56:53.901 [Thread-0] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:88 - Import-Package = org.kie.aries.blueprint,org.kie.aries.blueprint.factorybeans,org.kie.aries.blueprint.helpers,org.kie.api,org.kie.api.runtime,org.junit,*
+17:56:53.902 [Thread-0] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource drl_kiesample_dependency/Hal1.drl
+17:56:53.903 [Thread-0] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource OSGI-INF/blueprint/kie-beans-blueprint.xml
+17:56:53.907 [main] DEBUG o.ops4j.store.intern.TemporaryStore.store:95 - Exit store(): 5d54bf122be0375a83e598262d767071fa9f1a92
+17:56:53.908 [main] DEBUG o.o.pax.exam.spi.DefaultExamSystem.createProbe:264 - creating default probe
+17:56:53.910 [main] DEBUG o.o.p.e.spi.reactors.ReactorManager.overwriteWithUserDefinition:380 - No User defined probe hook found
+17:56:53.910 [main] DEBUG o.o.p.e.s.intern.DefaultTestAddress.<init>:55 - NEW ADDRESS= PaxExam-80047536-97da-4e28-88dd-3907c845636b parent=null root=[TestAddress:PaxExam-80047536-97da-4e28-88dd-3907c845636b root:PaxExam-80047536-97da-4e28-88dd-3907c845636b] args=[Ljava.lang.Object;@1e4a7dd4
+17:56:53.911 [main] DEBUG o.o.pax.exam.spi.DefaultExamReactor.stage:70 - Staging reactor with probes: 1 using strategy: org.ops4j.pax.exam.spi.reactors.PerMethod@5e57643e
+17:56:53.911 [main] DEBUG o.ops4j.store.intern.TemporaryStore.<init>:59 - Storage Area is /tmp/1501257413827-0
+17:56:53.913 [main] DEBUG o.o.p.e.s.intern.DefaultTestAddress.<init>:55 - NEW ADDRESS= PaxExam-c0dc8214-0140-4855-9a08-cee9bb62312e parent=[TestAddress:PaxExam-80047536-97da-4e28-88dd-3907c845636b root:PaxExam-80047536-97da-4e28-88dd-3907c845636b] root=[TestAddress:PaxExam-80047536-97da-4e28-88dd-3907c845636b root:PaxExam-80047536-97da-4e28-88dd-3907c845636b] args=[Ljava.lang.Object;@71d15f18
+17:56:53.925 [main] INFO  o.o.pax.exam.junit.impl.ProbeRunner.run:94 - running test class org.kie.karaf.itest.blueprint.KieBlueprintDependencyKarafIntegrationTest
+17:56:53.926 [main] DEBUG o.o.p.exam.junit.impl.ProbeRunner$2.evaluate:261 - Invoke testKieBase @ [TestAddress:PaxExam-c0dc8214-0140-4855-9a08-cee9bb62312e root:PaxExam-80047536-97da-4e28-88dd-3907c845636b] Arguments: [Ljava.lang.Object;@1e4a7dd4
+17:56:53.928 [main] DEBUG o.o.p.e.k.c.i.KarafTestContainer.start:130 - using RMI registry at port 21000
+17:56:53.973 [main] DEBUG o.ops4j.store.intern.TemporaryStore.<init>:59 - Storage Area is /tmp/1501257413827-0
+17:56:54.072 [main] DEBUG o.o.pax.url.mvn.internal.Connection.getInputStream:130 - Resolving [mvn:org.apache.karaf/apache-karaf/2.4.0/tar.gz]
+17:56:54.095 [main] DEBUG s.o.e.a.i.i.DefaultLocalRepositoryProvider.newLocalRepositoryManager:116 - Using manager SimpleLocalRepositoryManager with priority 0.0 for /home/mmortari/.m2/repository
+17:56:54.100 [main] DEBUG o.o.p.u.m.i.AetherBasedResolver.resolveFile:315 - Resolved (org.apache.karaf:apache-karaf:tar.gz:2.4.0) as /home/mmortari/.m2/repository/org/apache/karaf/apache-karaf/2.4.0/apache-karaf-2.4.0.tar.gz
+17:56:54.393 [main] DEBUG o.o.p.e.k.c.i.KarafTestContainer.startKaraf:224 - Test Container started in 4 millis
+17:56:54.393 [main] INFO  o.o.p.e.k.c.i.KarafTestContainer.startKaraf:226 - Wait for test container to finish its initialization [ RelativeTimeout value = 180000 ]
+17:56:54.394 [main] INFO  o.o.p.e.r.c.i.RemoteBundleContextClientImpl.getRemoteBundleContext:233 - Waiting for remote bundle context.. on 21000 name: c8c6d430-0f0b-416c-af0d-86de6c1f9f63 timout: [ RelativeTimeout value = 180000 ]
+        __ __                  ____      
+       / //_/____ __________ _/ __/      
+      / ,<  / __ `/ ___/ __ `/ /_        
+     / /| |/ /_/ / /  / /_/ / __/        
+    /_/ |_|\__,_/_/   \__,_/_/         
+
+  Apache Karaf (2.4.0)
+
+Hit '<tab>' for a list of available commands
+and '[cmd] --help' for help on a specific command.
+Hit '<ctrl-d>' or type 'osgi:shutdown' or 'logout' to shutdown Karaf.
+
+karaf@root> 17:56:59.179 [main] DEBUG o.o.p.e.r.c.i.RemoteBundleContextClientImpl.getRemoteBundleContext:257 - Remote bundle context found after 4785 millis
+17:56:59.238 [main] DEBUG o.o.p.t.core.intern.AsyncRawBuilder.build:40 - make()
+17:56:59.239 [main] DEBUG o.ops4j.store.intern.TemporaryStore.store:65 - Enter store()
+17:56:59.239 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:77 - Creating manifest from added headers.
+17:56:59.239 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:88 - Ignore-Package = 
+17:56:59.240 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:88 - PaxExam-Executable = PaxExam-80047536-97da-4e28-88dd-3907c845636b,
+17:56:59.240 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:88 - Bundle-ManifestVersion = 2
+17:56:59.240 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:88 - Bundle-SymbolicName = PAXEXAM-PROBE-f8d6c36a-1048-4024-a907-cd46ba9cc257
+17:56:59.240 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:88 - PaxExam-80047536-97da-4e28-88dd-3907c845636b = org.kie.karaf.itest.blueprint.KieBlueprintDependencyKarafIntegrationTest;testKieBase
+17:56:59.240 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.getManifest:88 - DynamicImport-Package = *
+17:56:59.241 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource decisiontables/data/MultiSheetDST.xls
+17:56:59.242 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/processpersistence/datasource.xml
+17:56:59.243 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/kieserver/KieServerClientKarafIntegrationJaxbIntegrationTest.class
+17:56:59.244 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/kie-scanner-reimport-blueprint.xml
+17:56:59.244 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/beans/ProcessWithPersistenceEnvBean.class
+17:56:59.245 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/AbstractKarafIntegrationTest.class
+17:56:59.246 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/kie-beans-blueprint.xml
+17:56:59.246 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/InstallFeaturesKarafIntegrationTest.class
+17:56:59.246 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/KieSpringMetaInfAppContextKarafIntegrationTest.class
+17:56:59.247 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/AbstractKieSpringKarafIntegrationTest.class
+17:56:59.247 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/model/Person.class
+17:56:59.247 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/kie-beans-dependency.xml
+17:56:59.248 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/util/PaxExamWithWireMock.class
+17:56:59.248 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource META-INF/maven/org.kie/kie-osgi/pom.properties
+17:56:59.249 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource test.properties
+17:56:59.250 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource META-INF/persistence.xml
+17:56:59.250 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/util/PaxExamWithWireRestClientMock.class
+17:56:59.250 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource drl_kiesample_dependency/Hal1.drl
+17:56:59.250 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/KieSpringjBPMPersistenceKarafIntegrationTest.class
+17:56:59.251 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource maven-settings.xml
+17:56:59.251 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource decisiontables/templates/test_template1.drl
+17:56:59.252 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource Evaluation.bpmn
+17:56:59.252 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource wb-models/bz-1312164-guided-dtable-with-fqcn.gdst
+17:56:59.252 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/kieserver/BaseKieServerClientKarafIntegrationTest.class
+17:56:59.253 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource blueprint_process_dep/sampleProcess.bpmn2
+17:56:59.253 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/SimpleKieSpringKarafIntegrationTest.class
+17:56:59.254 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/processpersistence/kie-beans-blueprint-process-persistence.xml
+17:56:59.254 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/util/FileManager.class
+17:56:59.254 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/KieBlueprintDependencyKarafIntegrationTest.class
+17:56:59.255 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/processpersistence/kmodule.xml
+17:56:59.255 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource logback-test.xml
+17:56:59.255 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/kie-beans-service.xml
+17:56:59.256 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource wb-models/simple-guided-dtable.gdst
+17:56:59.256 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource blueprint_process_dep/sampleRule.drl
+17:56:59.256 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/RuntimeManagerFeatureKarafIntegrationTest.class
+17:56:59.256 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/util/KieScannerTestUtils.class
+17:56:59.257 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/WorkbenchModelsKarafIntegrationTest.class
+17:56:59.257 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource wb-models/simple-scorecard.sxls
+17:56:59.258 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/kie-scanner-import-blueprint.xml
+17:56:59.258 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/kie-beans-persistence.xml
+17:56:59.259 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/kieserver/KieServerClientKarafIntegrationXstreamIntegrationTest.class
+17:56:59.259 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource blueprint_process_persistence/sampleRule.drl
+17:56:59.259 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/KieBlueprintjBPMPersistenceKarafIntegrationTest.class
+17:56:59.259 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/KieSpringDependencyKarafIntegrationTest.class
+17:56:59.260 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/util/TimerUtils.class
+17:56:59.260 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/KieBlueprintImportIntegrationTest.class
+17:56:59.260 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/kie-beans-blueprint-process-dep.xml
+17:56:59.260 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/beans/ProcessWithPersistenceDirectBean.class
+17:56:59.261 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/KieBlueprintScannerReimportIntegrationTest.class
+17:56:59.261 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource blueprint_process_persistence/sampleProcess.bpmn2
+17:56:59.261 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/KieBlueprintProcessDependencyKarafIntegrationTest.class
+17:56:59.262 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/blueprint/processpersistence/persistence.xml
+17:56:59.262 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/KieDMNKarafIntegrationTest.class
+17:56:59.262 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/beans/AbstractProcessWithPersistenceBean.class
+17:56:59.263 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource drl_kiesample/Hal1.drl
+17:56:59.263 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/DecisionTablesIntegrationTest.class
+17:56:59.263 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource kie-dmn/FunctionDefinition.dmn
+17:56:59.264 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/kie-beans.xml
+17:56:59.264 [Thread-5] DEBUG o.o.p.t.core.intern.RawBuilder.build:59 - Copying resource org/kie/karaf/itest/kieserver/KieServerClientKarafIntegrationJsonIntegrationTest.class
+17:56:59.266 [main] DEBUG o.ops4j.store.intern.TemporaryStore.store:95 - Exit store(): d8bf2c0bc5456ed08664140ffadb91fc022a3f51
+17:56:59.267 [main] DEBUG o.o.p.e.c.remote.RBCRemoteTarget.install:68 - Preparing and Installing bundle (from stream )..
+17:56:59.267 [main] DEBUG o.o.p.e.r.c.i.RemoteBundleContextClientImpl.pack:144 - Packing probe into memory for true RMI. Hopefully things will fill in..
+17:56:59.323 [main] DEBUG o.o.p.e.c.remote.RBCRemoteTarget.install:72 - Installed bundle (from stream) as ID: 136
+17:56:59.324 [main] DEBUG o.o.p.e.c.remote.RBCRemoteTarget.call:59 - call [[TestAddress:PaxExam-c0dc8214-0140-4855-9a08-cee9bb62312e root:PaxExam-80047536-97da-4e28-88dd-3907c845636b]]
+17:57:09.419 [main] DEBUG o.o.p.e.k.c.i.KarafTestContainer.stop:508 - Shutting down the test container (Pax Runner)
+
+2017-07-28 17:57:09,509 | WARN  |  Bundle Shutdown | aries                            | 114 - org.apache.aries.jpa.blueprint.aries - 1.0.2 | Managed persistence context support is no longer available for use with the Aries Blueprint container.
+2017-07-28 17:57:09,515 | WARN  |  Bundle Shutdown | core                             | 34 - org.apache.aries.jmx.core - 1.1.2 | Task rejected for JMX Notification dispatch of event [org.osgi.framework.ServiceEvent[source={javax.management.MBeanServer}={osgi.service.blueprint.compname=mbeanServer, service.id=342}]] - Dispatcher may have been shutdown
+17:57:09.972 [main] WARN  o.o.pax.exam.spi.DefaultExamSystem.warnUnusedOptions:238 - Option org.ops4j.pax.exam.karaf.options.KarafDistributionConfigurationOption has not been recognized.
+17:57:09.973 [main] WARN  o.o.pax.exam.spi.DefaultExamSystem.warnUnusedOptions:238 - Option org.ops4j.pax.exam.options.FrameworkStartLevelOption has not been recognized.
+17:57:10.053 [main] INFO  o.o.p.e.spi.reactors.ReactorManager.afterClass:434 - suite finished
