@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<semantic:definitions xmlns:semantic="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns="http://www.trisotech.com/definitions/_0726e0ca-0f39-4aae-9abf-173fd79a66a8" xmlns:feel="http://www.omg.org/spec/FEEL/20140401" xmlns:tc="http://www.omg.org/spec/DMN/20160719/testcase" xmlns:triso="http://www.trisotech.com/2015/triso/modeling" xmlns:trisofeed="http://trisotech.com/feed" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="DMN Modeler" exporterVersion="5.2.14.2" id="_0726e0ca-0f39-4aae-9abf-173fd79a66a8" name="map-input" namespace="http://www.trisotech.com/definitions/_0726e0ca-0f39-4aae-9abf-173fd79a66a8" triso:logoChoice="Default">
+  <semantic:extensionElements/>
+  <semantic:itemDefinition label="Person" name="Person">
+    <semantic:itemComponent id="_dd91601e-c6c3-4cff-bd87-84b9ca4b2ee3" name="name">
+      <semantic:typeRef>feel:string</semantic:typeRef>
+    </semantic:itemComponent>
+    <semantic:itemComponent id="_631ea837-6ed2-48e6-a00d-3a9ed46a04fe" name="age">
+      <semantic:typeRef>feel:number</semantic:typeRef>
+    </semantic:itemComponent>
+  </semantic:itemDefinition>
+  <semantic:inputData id="_4c7a5c93-0830-43d7-bd52-b94e31166ad2" name="Person">
+    <semantic:variable id="_87d63492-4f16-4f4b-a147-25531a83e358" name="Person" typeRef="Person"/>
+  </semantic:inputData>
+  <semantic:decision id="_920a08f3-c815-45c0-88c9-6cb46fc32756" name="Greetings">
+    <semantic:variable id="_0f204853-e3fe-458a-b9b2-4f28cd532050" name="Greetings" typeRef="feel:string"/>
+    <semantic:informationRequirement>
+      <semantic:requiredInput href="#_4c7a5c93-0830-43d7-bd52-b94e31166ad2"/>
+    </semantic:informationRequirement>
+    <semantic:literalExpression id="_353666a6-9e9a-4ff7-b5fa-049ba092494e">
+      <semantic:text>"Hello " + Person.name</semantic:text>
+    </semantic:literalExpression>
+  </semantic:decision>
+</semantic:definitions>
