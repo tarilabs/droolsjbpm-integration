@@ -13,8 +13,58 @@
   <properties>
     <java.module.name>org.kie.server.services.dmn</java.module.name>
   </properties>
+          <!-- **** POC ****  -->
+      <!-- PAY ATTENTION TO VERSION OF pmml-model -->
+      <dependencyManagement>
+      <dependencies>
+      <!-- **** POC **** -->
+      <dependency>
+        <groupId>org.jpmml</groupId>
+        <artifactId>pmml-agent</artifactId>
+        <version>1.4.11</version> <!-- ATTENTION 1.4.11 intentional, because 1.4.9 evaluators depend on 1.4.11 -->
+      </dependency>
+      <dependency>
+        <groupId>org.jpmml</groupId>
+        <artifactId>pmml-model</artifactId>
+        <version>1.4.11</version> <!-- ATTENTION 1.4.11 intentional, because 1.4.9 evaluators depend on 1.4.11 -->
+      </dependency>
+      <dependency>
+        <groupId>org.jpmml</groupId>
+        <artifactId>pmml-evaluator</artifactId>
+        <version>1.4.9</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jpmml</groupId>
+        <artifactId>pmml-evaluator-extension</artifactId>
+        <version>1.4.9</version>
+      </dependency>
+      <!-- **** POC **** -->
+      
+      </dependencies>
+      </dependencyManagement>
+    <!-- **** POC ****  -->
 
   <dependencies>
+  
+        <!-- **** POC ****  -->
+      <!-- PAY ATTENTION TO VERSION OF pmml-model -->
+      <dependency>
+        <groupId>org.jpmml</groupId>
+        <artifactId>pmml-evaluator</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.jpmml</groupId>
+        <artifactId>pmml-evaluator-extension</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.jpmml</groupId>
+        <artifactId>pmml-agent</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.jpmml</groupId>
+        <artifactId>pmml-model</artifactId>
+      </dependency>
+    <!-- **** POC ****  -->
     <dependency>
       <groupId>org.kie</groupId>
       <artifactId>kie-api</artifactId>
